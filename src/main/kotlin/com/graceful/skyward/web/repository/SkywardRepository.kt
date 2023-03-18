@@ -9,11 +9,11 @@ class SkywardRepository(@Autowired private val gracefulJdbcTemplate: NamedParame
 
     fun queryForProperties(): Map<String, String>? {
         return gracefulJdbcTemplate.queryForObject(
-            "select cd_version_server, cd_version_client from mod_versions where ie_latest_version = 'Y'",
+            "select cd_version_server, cd_version_client from \"public\".\"mod_versions\" where ie_latest_version = 'Y'",
             emptyMap<String, String>()) { resultSet, _ ->
             mapOf(
                 Pair("serverVersion", resultSet.getString("cd_version_server")),
-                Pair("serverVersion", resultSet.getString("cd_version_client"))
+                Pair("clientVersion", resultSet.getString("cd_version_client"))
             )
         }
     }
