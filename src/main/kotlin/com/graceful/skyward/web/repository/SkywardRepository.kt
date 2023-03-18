@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-class SkywardRepository(@Autowired val gracefulJdbcTemplate: NamedParameterJdbcTemplate) {
+class SkywardRepository(@Autowired private val gracefulJdbcTemplate: NamedParameterJdbcTemplate) {
 
     fun queryForProperties(): Map<String, String>? {
         return gracefulJdbcTemplate.queryForObject(

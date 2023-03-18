@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: homolog
+
+server:
+  port: 8081

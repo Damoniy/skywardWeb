@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = [DataSourceAutoConfiguration::class])
+@EnableAutoConfiguration()
 class DataglowApplication
 
 fun main(args: Array<String>) {
