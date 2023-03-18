@@ -1,0 +1,6 @@
+graceful:
+  datasource:
+    jdbc-url: jdbc:postgresql://skywardRealms.postgresql.dbaas.com.br:5432/skywardRealms
+    driverClassName: org.postgresql.Driver
+    username: skywardRealms
+    password: Ls!w_G5R8T6Y7I
