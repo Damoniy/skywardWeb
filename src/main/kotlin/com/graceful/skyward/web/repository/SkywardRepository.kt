@@ -1,6 +1,7 @@
 package com.graceful.skyward.web.repository;
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +17,23 @@ class SkywardRepository(@Autowired private val gracefulJdbcTemplate: NamedParame
                 Pair("clientVersion", resultSet.getString("cd_version_client"))
             )
         }
+    }
+
+    fun playerExists(uuid: String): Boolean {
+        val parameterSource = with(MapSqlParameterSource()) {
+            addValue("uuid", uuid)
+        }
+        return try {
+            gracefulJdbcTemplate.queryForObject(
+                "select true ie_exists from skyward_player where id = :uuid", parameterSource
+            ) { resultSet, _ -> resultSet.getBoolean("ie_exists") }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun insertObject(sql: String, parameterSource: MapSqlParameterSource) {
+        gracefulJdbcTemplate.update(sql, parameterSource)
     }
 }
