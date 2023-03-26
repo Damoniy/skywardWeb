@@ -23,15 +23,34 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
             addValue("ie_active", "Y")
         }
 
+        val attributesParameterSource = with(MapSqlParameterSource()) {
+            addValue("uuid", uuid)
+            addValue("qt_strength", 0)
+            addValue("qt_agility", 0)
+            addValue("qt_vitality", 0)
+            addValue("qt_intelligence", 0)
+            addValue("qt_wisdom", 0)
+            addValue("qt_charisma", 0)
+            addValue("qt_luck", 0)
+        }
+
         if(!skywardRepository.playerExists(uuid)) {
             skywardRepository.insertObject(
                 "insert into skyward_player (id, username, ie_active, dt_inclusion, dt_release) " +
                         "values (:uuid, :username, :ie_active, current_timestamp, current_timestamp)",
                 parameterSource
             )
+
+            skywardRepository.insertObject("insert into player_attributes(id, qt_strength, qt_agility, qt_intelligence, qt_wisdom, qt_charisma, qt_luck) " +
+                    "values (:uuid, :qt_strength, :qt_agility, :qt_intelligence, :qt_wisdom, :qt_charisma, :qt_luck)",
+                attributesParameterSource)
             return ResponseEntity.status(HttpStatus.CREATED).build<Any>()
         }
 
         return ResponseEntity.noContent().build<Any>()
+    }
+
+    fun getAttributes() {
+
     }
 }

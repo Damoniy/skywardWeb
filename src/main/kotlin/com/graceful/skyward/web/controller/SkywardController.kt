@@ -20,4 +20,9 @@ class SkywardController(@Autowired private val skywardService: SkywardService) {
     fun savePlayer(@RequestBody body: Map<String, String>): ResponseEntity<*> {
         return skywardService.savePlayer(body.getOrDefault("uuid", "0"), body.getOrDefault("username", "0"))
     }
+
+//    @GetMapping("/api/v1/player/{uuid}/attributes")
+//    fun getAttributes() {
+//        return skywardService.getAttributes()
+//    }
 }
