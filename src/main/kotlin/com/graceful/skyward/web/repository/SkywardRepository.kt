@@ -55,4 +55,7 @@ class SkywardRepository(@Autowired private val gracefulJdbcTemplate: NamedParame
     fun insertObject(sql: String, parameterSource: MapSqlParameterSource) {
         gracefulJdbcTemplate.update(sql, parameterSource)
     }
+    fun updateObject(sql: String, parameterSource: MapSqlParameterSource) {
+        gracefulJdbcTemplate.update(sql, parameterSource)
+    }
 }

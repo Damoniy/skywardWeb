@@ -53,4 +53,25 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
     fun getAttributes(uuid: String): ResponseEntity<*> {
         return ResponseEntity.ok(skywardRepository.queryForAttributes(uuid))
     }
+
+    fun saveAttributes(attributes: Map<String, String>): ResponseEntity<*> {
+        val parameterSource = MapSqlParameterSource()
+
+        for(key in attributes.keys) {
+            parameterSource.addValue(key, attributes[key])
+        }
+
+        skywardRepository.updateObject("update player_attributes " +
+                "set qt_strength = :qt_strength, " +
+                " qt_agility = :qt_agility, " +
+                " qt_vitality = :qt_vitality,  " +
+                " qt_intelligence = :qt_intelligence, " +
+                " qt_wisdom = :qt_wisdom, " +
+                " qt_charisma = :qt_charisma, " +
+                " qt_luck = :qt_luck" +
+                "where id = :uuid",
+                parameterSource)
+
+        return ResponseEntity.ok("Player attributes has been updated.")
+    }
 }

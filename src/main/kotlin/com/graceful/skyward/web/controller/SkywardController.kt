@@ -26,4 +26,9 @@ class SkywardController(@Autowired private val skywardService: SkywardService) {
     fun getAttributes(@PathVariable uuid: String): ResponseEntity<*> {
         return skywardService.getAttributes(uuid)
     }
+
+    @PostMapping("/api/v1/player/persistAttributes")
+    fun savePlayerAttributes(@RequestBody attributes: Map<String, String>): ResponseEntity<*> {
+        return skywardService.saveAttributes(attributes)
+    }
 }
