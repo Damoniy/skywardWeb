@@ -63,7 +63,7 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
                 continue
             }
 
-            parameterSource.addValue(key, attributes[key].toInt())
+            parameterSource.addValue(key, attributes[key]?.toInt())
         }
 
         skywardRepository.updateObject("update player_attributes " +
