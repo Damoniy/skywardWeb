@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -21,8 +22,8 @@ class SkywardController(@Autowired private val skywardService: SkywardService) {
         return skywardService.savePlayer(body.getOrDefault("uuid", "0"), body.getOrDefault("username", "0"))
     }
 
-//    @GetMapping("/api/v1/player/{uuid}/attributes")
-//    fun getAttributes() {
-//        return skywardService.getAttributes()
-//    }
+    @GetMapping("/api/v1/player/{uuid}/attributes")
+    fun getAttributes(@PathVariable uuid: String): ResponseEntity<*> {
+        return skywardService.getAttributes(uuid)
+    }
 }

@@ -19,7 +19,26 @@ class SkywardRepository(@Autowired private val gracefulJdbcTemplate: NamedParame
         }
     }
 
-    fun playerExists(uuid: String): Boolean {
+    fun queryForAttributes(uuid: String): Map<String, String>? {
+        val parameterSource = MapSqlParameterSource()
+        parameterSource.addValue("id", uuid)
+
+        return gracefulJdbcTemplate.queryForObject(
+            "select qt_strength, qt_agility, qt_vitality, qt_intelligence, qt_wisdom, qt_charisma, qt_luck from player_attributes where id = :id",
+            parameterSource) { resultSet, _ ->
+            mapOf(
+                Pair("qt_strength", resultSet.getString("qt_strength")),
+                Pair("qt_agility", resultSet.getString("qt_agility")),
+                Pair("qt_vitality", resultSet.getString("qt_vitality")),
+                Pair("qt_intelligence", resultSet.getString("qt_intelligence")),
+                Pair("qt_wisdom", resultSet.getString("qt_wisdom")),
+                Pair("qt_charisma", resultSet.getString("qt_charisma")),
+                Pair("qt_luck", resultSet.getString("qt_luck")),
+            )
+        }
+    }
+
+        fun playerExists(uuid: String): Boolean {
         val parameterSource = with(MapSqlParameterSource()) {
             addValue("uuid", uuid)
         }

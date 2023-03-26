@@ -41,8 +41,8 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
                 parameterSource
             )
 
-            skywardRepository.insertObject("insert into player_attributes(id, qt_strength, qt_agility, qt_intelligence, qt_wisdom, qt_charisma, qt_luck) " +
-                    "values (:uuid, :qt_strength, :qt_agility, :qt_intelligence, :qt_wisdom, :qt_charisma, :qt_luck)",
+            skywardRepository.insertObject("insert into player_attributes(id, qt_strength, qt_agility, qt_vitality, qt_intelligence, qt_wisdom, qt_charisma, qt_luck) " +
+                    "values (:uuid, :qt_strength, :qt_agility, :qt_vitality, :qt_intelligence, :qt_wisdom, :qt_charisma, :qt_luck)",
                 attributesParameterSource)
             return ResponseEntity.status(HttpStatus.CREATED).build<Any>()
         }
@@ -50,7 +50,7 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
         return ResponseEntity.noContent().build<Any>()
     }
 
-    fun getAttributes() {
-
+    fun getAttributes(uuid: String): ResponseEntity<*> {
+        return ResponseEntity.ok(skywardRepository.queryForAttributes(uuid))
     }
 }
