@@ -58,7 +58,12 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
         val parameterSource = MapSqlParameterSource()
 
         for(key in attributes.keys) {
-            parameterSource.addValue(key, attributes[key])
+            if(key == "uuid") {
+                parameterSource.addValue(key, attributes[key])
+                continue
+            }
+
+            parameterSource.addValue(key, attributes[key].toInt())
         }
 
         skywardRepository.updateObject("update player_attributes " +
