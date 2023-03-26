@@ -69,7 +69,7 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
                 " qt_wisdom = :qt_wisdom, " +
                 " qt_charisma = :qt_charisma, " +
                 " qt_luck = :qt_luck" +
-                "where id = :uuid",
+                " where id = :uuid",
                 parameterSource)
 
         return ResponseEntity.ok("Player attributes has been updated.")
