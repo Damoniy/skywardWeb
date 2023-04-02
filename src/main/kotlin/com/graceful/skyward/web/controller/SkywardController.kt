@@ -31,4 +31,14 @@ class SkywardController(@Autowired private val skywardService: SkywardService) {
     fun savePlayerAttributes(@RequestBody attributes: Map<String, String>): ResponseEntity<*> {
         return skywardService.saveAttributes(attributes)
     }
+
+    @GetMapping("/api/v1/cities")
+    fun getCities(): ResponseEntity<*> {
+        return skywardService.getCityAreas();
+    }
+
+    @GetMapping("/api/v1/player/{uuid}/residences")
+    fun getPlayerResidences(@PathVariable uuid: String): ResponseEntity<*> {
+        return skywardService.getPlayerResidenceAreas(uuid)
+    }
 }

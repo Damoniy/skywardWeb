@@ -1,5 +1,6 @@
 package com.graceful.skyward.web.service
 
+import com.graceful.skyward.web.dto.Residence
 import com.graceful.skyward.web.repository.SkywardRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -78,5 +79,24 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
                 parameterSource)
 
         return ResponseEntity.ok("Player attributes has been updated.")
+    }
+
+    fun getCityAreas(): ResponseEntity<*> {
+        return ResponseEntity.ok(
+                skywardRepository.queryForCities(
+                    "select id, id_dimension, nm_city, ps_start_x, ps_start_y, ps_start_z, ps_final_x, ps_final_y, ps_final_z from City where 1=1",
+            )
+        )
+    }
+
+    fun getPlayerResidenceAreas(uuid: String): ResponseEntity<*> {
+        val parameterSource = with(MapSqlParameterSource()) {
+            addValue("uuid", uuid)
+        }
+
+        return ResponseEntity.ok(skywardRepository.queryForPlayerResidences(
+            "select id, id_player, id_dimension, id_city, ps_start_x, ps_start_y, ps_start_z, ps_final_x, ps_final_y, ps_final_z from Residence where 1=1",
+            parameterSource
+        ))
     }
 }
