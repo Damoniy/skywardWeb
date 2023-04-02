@@ -1,7 +1,9 @@
 package com.graceful.skyward.web.controller
 
+import com.graceful.skyward.web.dto.Residence
 import com.graceful.skyward.web.service.SkywardService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -40,5 +42,11 @@ class SkywardController(@Autowired private val skywardService: SkywardService) {
     @GetMapping("/api/v1/player/{uuid}/residences")
     fun getPlayerResidences(@PathVariable uuid: String): ResponseEntity<*> {
         return skywardService.getPlayerResidenceAreas(uuid)
+    }
+
+    @PostMapping("/api/v1/player/createResidence")
+    fun savePlayerResidence(@RequestBody residence: Residence): ResponseEntity<*> {
+        skywardService.saveResidence(residence)
+        return ResponseEntity.status(HttpStatus.CREATED).build<Any>()
     }
 }

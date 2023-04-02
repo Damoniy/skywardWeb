@@ -99,4 +99,25 @@ class SkywardService(@Autowired private val skywardRepository: SkywardRepository
             parameterSource
         ))
     }
+
+    fun saveResidence(residence: Residence) {
+        val parameterSource = with(MapSqlParameterSource()) {
+            addValue("ownerId", residence.ownerId)
+            addValue("dimensionId", residence.dimensionId)
+            addValue("cityId", residence.cityId)
+            addValue("startX", residence.area.startX)
+            addValue("startY", residence.area.startY)
+            addValue("startZ", residence.area.startZ)
+            addValue("finalX", residence.area.finalX)
+            addValue("finalY", residence.area.finalY)
+            addValue("finalZ", residence.area.finalZ)
+        }
+        skywardRepository.insertObject(
+            "insert into residence " +
+                "(id_player, id_dimension, id_city, ps_start_x, ps_start_y, ps_start_z, ps_final_x, ps_final_y, ps_final_z) " +
+                " values " +
+                "(:ownerId, :dimensionId, :cityId, :startX, :startY, :startZ, :finalX, :finalY, :finalZ)",
+            parameterSource
+        )
+    }
 }
