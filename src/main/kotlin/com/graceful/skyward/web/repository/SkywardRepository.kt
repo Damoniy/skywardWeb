@@ -4,7 +4,6 @@ import com.graceful.skyward.web.dto.Area
 import com.graceful.skyward.web.dto.City
 import com.graceful.skyward.web.dto.Residence
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.jdbc.core.DataClassRowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -42,23 +41,53 @@ class SkywardRepository(@Autowired private val gracefulJdbcTemplate: NamedParame
         }
     }
 
-        fun playerExists(uuid: String): Boolean {
+    fun playerExists(uuid: String): Boolean {
         val parameterSource = with(MapSqlParameterSource()) {
             addValue("uuid", uuid)
         }
         return try {
             gracefulJdbcTemplate.queryForObject(
                 "select true ie_exists from skyward_player where id = :uuid", parameterSource
-            ) { resultSet, _ -> resultSet.getBoolean("ie_exists") }
+            ) { resultSet, _ -> resultSet.getString("ie_exists") }
             true
         } catch (e: Exception) {
             false
         }
     }
 
+    fun userExists(uuid: String): Boolean {
+        val parameterSource = with(MapSqlParameterSource()) {
+            addValue("uuid", uuid)
+        }
+        return try {
+            gracefulJdbcTemplate.queryForObject(
+                "select true ie_exists from skyward_user where id = :uuid", parameterSource
+            ) { resultSet, _ -> resultSet.getString("ie_exists") }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun hasPasswordFor(uuid: String): Boolean {
+        val parameterSource = with(MapSqlParameterSource()) {
+            addValue("uuid", uuid)
+        }
+        return try {
+            gracefulJdbcTemplate.queryForObject(
+                "select true ie_exists from skyward_player_password where id = :uuid", parameterSource
+            ) { resultSet, _ -> resultSet.getString("ie_exists") }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+
     fun insertObject(sql: String, parameterSource: MapSqlParameterSource) {
         gracefulJdbcTemplate.update(sql, parameterSource)
     }
+
     fun updateObject(sql: String, parameterSource: MapSqlParameterSource) {
         gracefulJdbcTemplate.update(sql, parameterSource)
     }
@@ -99,5 +128,15 @@ class SkywardRepository(@Autowired private val gracefulJdbcTemplate: NamedParame
                 )
             )
         }
+    }
+
+    fun queryForPassword(uuid: String): MutableMap<String, Any> {
+        val parameterSource = with(MapSqlParameterSource()) {
+            addValue("id", uuid)
+        }
+
+        val sql = "select cd_pin from skyward_player_password where id = :id"
+
+        return gracefulJdbcTemplate.queryForMap(sql, parameterSource)
     }
 }

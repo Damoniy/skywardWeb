@@ -1,6 +1,7 @@
 package com.graceful.skyward.web.controller
 
 import com.graceful.skyward.web.dto.Residence
+import com.graceful.skyward.web.service.MojangService
 import com.graceful.skyward.web.service.SkywardService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 @Controller
-class SkywardController(@Autowired private val skywardService: SkywardService) {
+class SkywardController(@Autowired private val skywardService: SkywardService,
+                        @Autowired private val mojangService: MojangService) {
 
     @GetMapping("/api/v1/data/properties")
     fun getProperties(): ResponseEntity<*> {
@@ -48,5 +50,15 @@ class SkywardController(@Autowired private val skywardService: SkywardService) {
     fun savePlayerResidence(@RequestBody residence: Residence): ResponseEntity<*> {
         skywardService.saveResidence(residence)
         return ResponseEntity.status(HttpStatus.CREATED).build<Any>()
+    }
+
+    @PostMapping("/api/v1/player/auth")
+    fun tryAuthenticate(@RequestBody body: Map<String, String>): ResponseEntity<*> {
+        return mojangService.skywardAuthentication(body["uuid"]!!, body["password"]!!)
+    }
+
+    @PostMapping("/api/v1/player/createPassword")
+    fun createPassword(@RequestBody body: Map<String, String>): ResponseEntity<*> {
+        return mojangService.skywardPasswordSynthesis(body["uuid"]!!, body["password"]!!)
     }
 }
