@@ -103,11 +103,11 @@ class MojangService(@Autowired private val skywardRepository: SkywardRepository)
     fun skywardAuthentication(uuid: String, password: String): ResponseEntity<*> {
         try {
             if(serverAuthentication(uuid, password)) {
-                return ResponseEntity.ok("\"isValid\": \"true\"")
+                return ResponseEntity.ok("{ \"isValid\": \"true\" }")
             }
-            return ResponseEntity.badRequest().body("\"isValid\": \"false\"")
+            return ResponseEntity.badRequest().body("{ \"isValid\": \"false\" }")
         } catch (e: Exception) {
-            return ResponseEntity.internalServerError().body("\"isValid\": \"false\"")
+            return ResponseEntity.internalServerError().body("{ \"isValid\": \"false\" }")
         }
     }
 
@@ -115,12 +115,12 @@ class MojangService(@Autowired private val skywardRepository: SkywardRepository)
         try {
             if(skywardRepository.playerExists(uuid)) {
                 if (createPassword(uuid, password)) {
-                    return ResponseEntity.status(HttpStatus.CREATED).body("\"isCreated\": \"true\"")
+                    return ResponseEntity.status(HttpStatus.CREATED).body("{ \"isCreated\": \"true\" }")
                 }
             }
-            return ResponseEntity.badRequest().body("\"isCreated\": \"false\"")
+            return ResponseEntity.badRequest().body("{ \"isCreated\": \"false\" }")
         } catch (e: Exception) {
-            return ResponseEntity.internalServerError().body("\"isCreated\": \"false\"")
+            return ResponseEntity.internalServerError().body("{ \"isCreated\": \"false\" }")
         }
     }
 }
